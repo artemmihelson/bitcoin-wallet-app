@@ -1,0 +1,42 @@
+# Xcode
+.DS_Store
+!.gitignore
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcuserstate
+
+# Swift Package Manager
+/.build/
+/Packages/
+/Package.pins
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+
+# CocoaPods
+Pods/*
+!Pods/Target\ Support\ Files/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/*.log
+
+# Code Signing
+*.pem
+*.cer
+*.mobileprovision
+*.p12
+
+# Archives
+*.xcarchive
+
+# Unit Tests
+xcresult/
