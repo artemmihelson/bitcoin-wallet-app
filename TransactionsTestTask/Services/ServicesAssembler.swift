@@ -4,29 +4,26 @@
 //
 //
 enum ServicesAssembler {
+    static let bitcoinRateService: PerformOnce<BitcoinRateService> = PerformOnce {
+        BitcoinRateServiceImpl()
+    }
     
-    // MARK: - BitcoinRateService
+    static let analyticsService: PerformOnce<AnalyticsService> = PerformOnce {
+        AnalyticsServiceImpl()
+    }
     
-    static let bitcoinRateService: PerformOnce<BitcoinRateService> = {
-        lazy var analyticsService = Self.analyticsService()
-        
-        let service = BitcoinRateServiceImpl()
-        
-        service.onRateUpdate = {
-            analyticsService.trackEvent(
-                name: "bitcoin_rate_update",
-                parameters: ["rate": String(format: "%.2f", $0)]
-            )
-        }
-        
-        return { service }
-    }()
+    static let bitcoinLogger: PerformOnce<BitcoinRateLogger> = PerformOnce {
+        BitcoinRateLogger(
+            service: bitcoinRateService(),
+            analytics: analyticsService()
+        )
+    }
     
-    // MARK: - AnalyticsService
-    
-    static let analyticsService: PerformOnce<AnalyticsService> = {
-        let service = AnalyticsServiceImpl()
+    static func initialize() {
+        let service = bitcoinRateService()
+        let _ = bitcoinLogger()
         
-        return { service }
-    }()
+        // Start updating rates
+        service.startUpdating()
+    }
 }
