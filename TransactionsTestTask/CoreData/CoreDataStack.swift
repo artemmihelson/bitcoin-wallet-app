@@ -14,6 +14,7 @@ protocol CoreDataStackProtocol {
     var backgroundContext: NSManagedObjectContext { get }
     func saveContext() throws
     func saveBackgroundContext() throws
+    func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T
 }
 
 final class CoreDataStack: CoreDataStackProtocol {
