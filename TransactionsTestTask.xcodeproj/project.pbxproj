@@ -22,6 +22,10 @@
 		448AB9722DE85D9F009BEBA8 /* TransactionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9712DE85D9F009BEBA8 /* TransactionStore.swift */; };
 		448AB9752DE86ED3009BEBA8 /* BTCResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9742DE86ED3009BEBA8 /* BTCResponse.swift */; };
 		448AB9782DE86F1A009BEBA8 /* BitcoinRateLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9772DE86F1A009BEBA8 /* BitcoinRateLogger.swift */; };
+		448AB97B2DE887CC009BEBA8 /* MockBitcoinRateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB97A2DE887CC009BEBA8 /* MockBitcoinRateService.swift */; };
+		448AB97D2DE88827009BEBA8 /* MockAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB97C2DE88827009BEBA8 /* MockAnalyticsService.swift */; };
+		448AB9802DE88872009BEBA8 /* TestModuleObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB97F2DE88872009BEBA8 /* TestModuleObserver.swift */; };
+		448AB9822DE8895B009BEBA8 /* TestMultiModuleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9812DE8895B009BEBA8 /* TestMultiModuleLogger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +65,11 @@
 		448AB9712DE85D9F009BEBA8 /* TransactionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStore.swift; sourceTree = "<group>"; };
 		448AB9742DE86ED3009BEBA8 /* BTCResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCResponse.swift; sourceTree = "<group>"; };
 		448AB9772DE86F1A009BEBA8 /* BitcoinRateLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinRateLogger.swift; sourceTree = "<group>"; };
+		448AB97A2DE887CC009BEBA8 /* MockBitcoinRateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBitcoinRateService.swift; sourceTree = "<group>"; };
+		448AB97C2DE88827009BEBA8 /* MockAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAnalyticsService.swift; sourceTree = "<group>"; };
+		448AB97F2DE88872009BEBA8 /* TestModuleObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestModuleObserver.swift; sourceTree = "<group>"; };
+		448AB9812DE8895B009BEBA8 /* TestMultiModuleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMultiModuleLogger.swift; sourceTree = "<group>"; };
+		448AB9832DE88D1A009BEBA8 /* TransactionsTestTaskUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TransactionsTestTaskUITests-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +129,7 @@
 		1CA3B6492D22B0F500176711 = {
 			isa = PBXGroup;
 			children = (
+				448AB9832DE88D1A009BEBA8 /* TransactionsTestTaskUITests-Info.plist */,
 				1CA3B6542D22B0F500176711 /* TransactionsTestTask */,
 				1CA3B66E2D22B0F600176711 /* TransactionsTestTaskTests */,
 				1CA3B6532D22B0F500176711 /* Products */,
@@ -153,6 +163,7 @@
 		1CA3B66E2D22B0F600176711 /* TransactionsTestTaskTests */ = {
 			isa = PBXGroup;
 			children = (
+				448AB9792DE887B3009BEBA8 /* Mocks */,
 				1CA3B66F2D22B0F600176711 /* TransactionsTestTaskTests.swift */,
 			);
 			path = TransactionsTestTaskTests;
@@ -191,6 +202,25 @@
 				448AB9772DE86F1A009BEBA8 /* BitcoinRateLogger.swift */,
 			);
 			path = Loggers;
+			sourceTree = "<group>";
+		};
+		448AB9792DE887B3009BEBA8 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				448AB97E2DE8886C009BEBA8 /* Modules */,
+				448AB97C2DE88827009BEBA8 /* MockAnalyticsService.swift */,
+				448AB97A2DE887CC009BEBA8 /* MockBitcoinRateService.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		448AB97E2DE8886C009BEBA8 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				448AB9812DE8895B009BEBA8 /* TestMultiModuleLogger.swift */,
+				448AB97F2DE88872009BEBA8 /* TestModuleObserver.swift */,
+			);
+			path = Modules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,7 +372,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448AB9822DE8895B009BEBA8 /* TestMultiModuleLogger.swift in Sources */,
+				448AB97B2DE887CC009BEBA8 /* MockBitcoinRateService.swift in Sources */,
+				448AB9802DE88872009BEBA8 /* TestModuleObserver.swift in Sources */,
 				1CA3B6702D22B0F600176711 /* TransactionsTestTaskTests.swift in Sources */,
+				448AB97D2DE88827009BEBA8 /* MockAnalyticsService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +529,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMPTAT4869;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TransactionsTestTask/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -520,6 +555,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMPTAT4869;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TransactionsTestTask/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -544,6 +580,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMPTAT4869;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				MARKETING_VERSION = 1.0;
@@ -562,6 +599,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMPTAT4869;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				MARKETING_VERSION = 1.0;
@@ -579,7 +617,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMPTAT4869;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TransactionsTestTaskUITests-Info.plist";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.obrio.TransactionsTestTaskUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -595,7 +635,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMPTAT4869;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TransactionsTestTaskUITests-Info.plist";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.obrio.TransactionsTestTaskUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
