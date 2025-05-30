@@ -16,7 +16,7 @@
 		1CA3B6582D22B0F500176711 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA3B6572D22B0F500176711 /* SceneDelegate.swift */; };
 		1CA3B65A2D22B0F500176711 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA3B6592D22B0F500176711 /* MainViewController.swift */; };
 		1CA3B6622D22B0F600176711 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CA3B6612D22B0F600176711 /* Assets.xcassets */; };
-		1CA3B6702D22B0F600176711 /* TransactionsTestTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA3B66F2D22B0F600176711 /* TransactionsTestTaskTests.swift */; };
+		1CA3B6702D22B0F600176711 /* MultipleModulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA3B66F2D22B0F600176711 /* MultipleModulesTests.swift */; };
 		448AB96D2DE84F45009BEBA8 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB96C2DE84F45009BEBA8 /* CoreDataStack.swift */; };
 		448AB9702DE84F88009BEBA8 /* TransactionEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB96F2DE84F88009BEBA8 /* TransactionEntity.swift */; };
 		448AB9722DE85D9F009BEBA8 /* TransactionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9712DE85D9F009BEBA8 /* TransactionStore.swift */; };
@@ -70,7 +70,7 @@
 		1CA3B6612D22B0F600176711 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CA3B6662D22B0F600176711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CA3B66B2D22B0F600176711 /* TransactionsTestTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransactionsTestTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1CA3B66F2D22B0F600176711 /* TransactionsTestTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsTestTaskTests.swift; sourceTree = "<group>"; };
+		1CA3B66F2D22B0F600176711 /* MultipleModulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleModulesTests.swift; sourceTree = "<group>"; };
 		1CA3B6752D22B0F600176711 /* TransactionsTestTaskUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransactionsTestTaskUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		448AB96C2DE84F45009BEBA8 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		448AB96F2DE84F88009BEBA8 /* TransactionEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionEntity.swift; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 			children = (
 				4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */,
 				448AB9792DE887B3009BEBA8 /* Mocks */,
-				1CA3B66F2D22B0F600176711 /* TransactionsTestTaskTests.swift */,
+				1CA3B66F2D22B0F600176711 /* MultipleModulesTests.swift */,
 			);
 			path = TransactionsTestTaskTests;
 			sourceTree = "<group>";
@@ -454,7 +454,7 @@
 				448AB9822DE8895B009BEBA8 /* TestMultiModuleLogger.swift in Sources */,
 				448AB97B2DE887CC009BEBA8 /* MockBitcoinRateService.swift in Sources */,
 				448AB9802DE88872009BEBA8 /* TestModuleObserver.swift in Sources */,
-				1CA3B6702D22B0F600176711 /* TransactionsTestTaskTests.swift in Sources */,
+				1CA3B6702D22B0F600176711 /* MultipleModulesTests.swift in Sources */,
 				4492A8BB2DEA105B00A03E05 /* AnalyticsServiceTests.swift in Sources */,
 				448AB97D2DE88827009BEBA8 /* MockAnalyticsService.swift in Sources */,
 			);

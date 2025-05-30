@@ -8,7 +8,7 @@ import XCTest
 import Combine
 @testable import TransactionsTestTask
 
-final class TransactionsTestTaskTests: XCTestCase {
+final class MultiModuleTests: XCTestCase {
 
     var mockRateService: MockBitcoinRateService!
     var mockAnalytics: MockAnalyticsService!
