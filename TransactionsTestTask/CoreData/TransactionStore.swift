@@ -61,6 +61,7 @@ final class TransactionStore: TransactionStoreProtocol {
     // Publishers for reactive updates
     @Published private(set) var currentBalance: Double = 0.0
     @Published private(set) var transactionCount: Int = 0
+    @Published private(set) var allTransactions: [TransactionEntity] = []
     
     // MARK: - Initialization
     
@@ -96,6 +97,7 @@ final class TransactionStore: TransactionStoreProtocol {
         // Update reactive properties
         updateBalance()
         updateTransactionCount()
+        updateTransactions()
         
         return entity
     }
@@ -121,6 +123,7 @@ final class TransactionStore: TransactionStoreProtocol {
         // Update reactive properties
         updateBalance()
         updateTransactionCount()
+        updateTransactions()
         
         return entity
     }
@@ -231,35 +234,6 @@ final class TransactionStore: TransactionStoreProtocol {
         return balance >= amount
     }
     
-    func getTransactionsSummary(from startDate: Date, to endDate: Date) throws -> TransactionsSummary {
-        let request = TransactionEntity.fetchRequest()
-        request.predicate = NSPredicate(
-            format: "date >= %@ AND date <= %@",
-            startDate as NSDate,
-            endDate as NSDate
-        )
-        
-        do {
-            let transactions = try context.fetch(request)
-            let totalIncome = transactions
-                .filter { $0.transactionType == .topUp }
-                .reduce(0.0) { $0 + $1.bitcoinAmount }
-            
-            let totalExpenses = transactions
-                .filter { $0.transactionType == .expense }
-                .reduce(0.0) { $0 + $1.bitcoinAmount }
-            
-            return TransactionsSummary(
-                totalIncome: totalIncome,
-                totalExpenses: totalExpenses,
-                netAmount: totalIncome - totalExpenses,
-                transactionCount: transactions.count
-            )
-        } catch {
-            throw TransactionStoreError.fetchFailed(error)
-        }
-    }
-    
     // MARK: - Private Helpers
     
     private func validateAmount(_ amount: Double) throws {
@@ -291,27 +265,13 @@ final class TransactionStore: TransactionStoreProtocol {
             logger.error("❌ Failed to update transaction count: \(error.localizedDescription)")
         }
     }
-}
-
-// MARK: - Transaction Summary
-
-struct TransactionsSummary {
-    let totalIncome: Double
-    let totalExpenses: Double
-    let netAmount: Double
-    let transactionCount: Int
     
-    var formattedTotalIncome: String {
-        String(format: "+%.8f BTC", totalIncome)
-    }
-    
-    var formattedTotalExpenses: String {
-        String(format: "-%.8f BTC", totalExpenses)
-    }
-    
-    var formattedNetAmount: String {
-        let prefix = netAmount >= 0 ? "+" : ""
-        return String(format: "%@%.8f BTC", prefix, netAmount)
+    private func updateTransactions() {
+        do {
+            allTransactions = try fetchTransactions(offset: 0, limit: 20)
+        } catch {
+            logger.error("❌ Failed to update transactions: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -324,6 +284,10 @@ extension TransactionStore {
     
     var transactionCountPublisher: Published<Int>.Publisher {
         $transactionCount
+    }
+    
+    var transactionsPublisher: Published<[TransactionEntity]>.Publisher {
+        $allTransactions
     }
 }
 
