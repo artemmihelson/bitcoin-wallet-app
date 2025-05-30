@@ -72,12 +72,12 @@ enum TransactionCategory: String, CaseIterable, Codable {
 
 @objc(TransactionEntity)
 final class TransactionEntity: NSManagedObject {
-    @NSManaged internal var id: UUID
-    @NSManaged private var amount: Double
-    @NSManaged private var type: String
-    @NSManaged private var category: String?
-    @NSManaged private var date: Date
-    @NSManaged private var createdAt: Date
+    @NSManaged public var id: UUID
+    @NSManaged public var amount: Double
+    @NSManaged public var type: String
+    @NSManaged public var category: String?
+    @NSManaged public var date: Date
+    @NSManaged public var createdAt: Date
 }
 
 // MARK: - Computed Properties
@@ -164,6 +164,7 @@ extension TransactionEntity {
         bitcoinAmount: Double,
         date: Date = Date()
     ) -> TransactionEntity {
+        print("🔍 Creating top-up transaction: amount=\(bitcoinAmount)")
         let transaction = TransactionEntity(context: context)
         let now = Date()
         
@@ -174,6 +175,7 @@ extension TransactionEntity {
         transaction.date = date
         transaction.createdAt = now
         
+        print("✅ Created transaction: type=\(transaction.type), amount=\(transaction.amount)")
         return transaction
     }
     

@@ -14,14 +14,14 @@ import os.log
 // MARK: - Transaction Store Protocol
 
 protocol TransactionStoreProtocol {
-    func addTopUp(amount: Double, date: Date) async throws -> TransactionEntity
-    func addExpense(amount: Double, category: TransactionCategory, date: Date) async throws -> TransactionEntity
-    func fetchTransactions(offset: Int, limit: Int) async throws -> [TransactionEntity]
-    func fetchGroupedByDate(offset: Int, limit: Int) async throws -> [(Date, [TransactionEntity])]
-    func fetchTransactions(for date: Date) async throws -> [TransactionEntity]
-    func getBalance() async throws -> Double
-    func getTotalTransactionCount() async throws -> Int
-    func deleteTransaction(_ transaction: TransactionEntity) async throws
+    func addTopUp(amount: Double, date: Date) throws -> TransactionEntity
+    func addExpense(amount: Double, category: TransactionCategory, date: Date) throws -> TransactionEntity
+    func fetchTransactions(offset: Int, limit: Int) throws -> [TransactionEntity]
+    func fetchGroupedByDate(offset: Int, limit: Int) throws -> [(Date, [TransactionEntity])]
+    func fetchTransactions(for date: Date) throws -> [TransactionEntity]
+    func getBalance() -> Double
+    func getTotalTransactionCount() throws -> Int
+    func deleteTransaction(_ transaction: TransactionEntity) throws
 }
 
 // MARK: - Transaction Store Errors
@@ -55,7 +55,7 @@ final class TransactionStore: TransactionStoreProtocol {
     
     // MARK: - Properties
     
-    private let coreDataStack: CoreDataStackProtocol
+    private let context: NSManagedObjectContext
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "WalletApp", category: "TransactionStore")
     
     // Publishers for reactive updates
@@ -64,36 +64,40 @@ final class TransactionStore: TransactionStoreProtocol {
     
     // MARK: - Initialization
     
-    init(coreDataStack: CoreDataStackProtocol = CoreDataStack.shared) {
-        self.coreDataStack = coreDataStack
-        
-        Task {
-            await updateBalance()
-            await updateTransactionCount()
-        }
+    init(context: NSManagedObjectContext = CoreDataStack.shared.context) {
+        self.context = context
+        updateBalance()
+        updateTransactionCount()
     }
     
     // MARK: - Create Operations
     
     @discardableResult
-    func addTopUp(amount: Double, date: Date = Date()) async throws -> TransactionEntity {
+    func addTopUp(amount: Double, date: Date = Date()) throws -> TransactionEntity {
+        print("🔍 TransactionStore.addTopUp called with amount: \(amount)")
+        
         try validateAmount(amount)
         
-        return try await coreDataStack.performBackgroundTask { context in
-            let entity = TransactionEntity.createTopUp(
-                in: context,
-                bitcoinAmount: amount,
-                date: date
-            )
-            
-            try context.save()
-            
-            Task { @MainActor in
-                self.logger.info("✅ Top-up added: \(amount) BTC")
-            }
-            
-            return entity
-        }
+        let entity = TransactionEntity.createTopUp(
+            in: context,
+            bitcoinAmount: amount,
+            date: date
+        )
+        
+        // Debug the entity before saving
+        print("🔍 Entity before save: type=\(entity.type), amount=\(entity.amount)")
+        
+        try saveContext()
+        logger.info("✅ Top-up added: \(amount) BTC")
+        
+        // Debug the entity after saving
+        print("🔍 Entity after save: type=\(entity.type), amount=\(entity.amount)")
+        
+        // Update reactive properties
+        updateBalance()
+        updateTransactionCount()
+        
+        return entity
     }
     
     @discardableResult
@@ -101,25 +105,24 @@ final class TransactionStore: TransactionStoreProtocol {
         amount: Double,
         category: TransactionCategory,
         date: Date = Date()
-    ) async throws -> TransactionEntity {
+    ) throws -> TransactionEntity {
         try validateAmount(amount)
         
-        return try await coreDataStack.performBackgroundTask { context in
-            let entity = TransactionEntity.createExpense(
-                in: context,
-                bitcoinAmount: amount,
-                category: category,
-                date: date
-            )
-            
-            try context.save()
-            
-            Task { @MainActor in
-                self.logger.info("✅ Expense added: \(amount) BTC, category: \(category.displayName)")
-            }
-            
-            return entity
-        }
+        let entity = TransactionEntity.createExpense(
+            in: context,
+            bitcoinAmount: amount,
+            category: category,
+            date: date
+        )
+        
+        try saveContext()
+        logger.info("✅ Expense added: \(amount) BTC, category: \(category.displayName)")
+        
+        // Update reactive properties
+        updateBalance()
+        updateTransactionCount()
+        
+        return entity
     }
     
     // MARK: - Fetch Operations
@@ -127,134 +130,134 @@ final class TransactionStore: TransactionStoreProtocol {
     func fetchTransactions(
         offset: Int = 0,
         limit: Int = 20
-    ) async throws -> [TransactionEntity] {
-        return try await coreDataStack.performBackgroundTask { context in
-            let request = TransactionEntity.fetchTransactionsWithPagination(
-                offset: offset,
-                limit: limit
-            )
-            
-            do {
-                let transactions = try context.fetch(request)
-                Task { @MainActor in
-                    self.logger.debug("📊 Fetched \(transactions.count) transactions (offset: \(offset))")
-                }
-                return transactions
-            } catch {
-                Task { @MainActor in
-                    self.logger.error("❌ Failed to fetch transactions: \(error.localizedDescription)")
-                }
-                throw TransactionStoreError.fetchFailed(error)
-            }
+    ) throws -> [TransactionEntity] {
+        let request = TransactionEntity.fetchTransactionsWithPagination(
+            offset: offset,
+            limit: limit
+        )
+        
+        do {
+            let transactions = try context.fetch(request)
+            logger.debug("📊 Fetched \(transactions.count) transactions (offset: \(offset))")
+            return transactions
+        } catch {
+            logger.error("❌ Failed to fetch transactions: \(error.localizedDescription)")
+            throw TransactionStoreError.fetchFailed(error)
         }
     }
     
     func fetchGroupedByDate(
         offset: Int = 0,
         limit: Int = 20
-    ) async throws -> [(Date, [TransactionEntity])] {
-        let transactions = try await fetchTransactions(offset: offset, limit: limit)
-        return TransactionEntity.groupTransactionsByDate(transactions)
+    ) throws -> [(Date, [TransactionEntity])] {
+        let transactions = try fetchTransactions(offset: offset, limit: limit)
+        let grouped = TransactionEntity.groupTransactionsByDate(transactions)
+        
+        print("🔍 fetchGroupedByDate result:")
+        print("  - Input transactions: \(transactions.count)")
+        print("  - Grouped sections: \(grouped.count)")
+        for (index, (date, sectionTransactions)) in grouped.enumerated() {
+            print("  - Section \(index): \(TransactionEntity.formatDateForSection(date)) with \(sectionTransactions.count) transactions")
+        }
+        
+        return grouped
     }
     
-    func fetchTransactions(for date: Date) async throws -> [TransactionEntity] {
-        return try await coreDataStack.performBackgroundTask { context in
-            let request = TransactionEntity.fetchTransactions(for: date)
-            
-            do {
-                let transactions = try context.fetch(request)
-                Task { @MainActor in
-                    self.logger.debug("📊 Fetched \(transactions.count) transactions for date: \(date)")
-                }
-                return transactions
-            } catch {
-                Task { @MainActor in
-                    self.logger.error("❌ Failed to fetch transactions for date: \(error.localizedDescription)")
-                }
-                throw TransactionStoreError.fetchFailed(error)
-            }
+    func fetchTransactions(for date: Date) throws -> [TransactionEntity] {
+        let request = TransactionEntity.fetchTransactions(for: date)
+        
+        do {
+            let transactions = try context.fetch(request)
+            logger.debug("📊 Fetched \(transactions.count) transactions for date: \(date)")
+            return transactions
+        } catch {
+            logger.error("❌ Failed to fetch transactions for date: \(error.localizedDescription)")
+            throw TransactionStoreError.fetchFailed(error)
         }
     }
     
     // MARK: - Balance Operations
     
-    func getBalance() async throws -> Double {
-        return try await coreDataStack.performBackgroundTask { context in
-            let balance = TransactionEntity.calculateBalance(in: context)
-            
-            Task { @MainActor in
-                self.currentBalance = balance
-                self.logger.debug("💰 Current balance: \(balance) BTC")
-            }
-            
-            return balance
-        }
+    func getBalance() -> Double {
+        let balance = TransactionEntity.calculateBalance(in: context)
+        currentBalance = balance
+        logger.debug("💰 Current balance: \(balance) BTC")
+        return balance
     }
     
     // MARK: - Count Operations
     
-    func getTotalTransactionCount() async throws -> Int {
-        return try await coreDataStack.performBackgroundTask { context in
-            let request = TransactionEntity.fetchRequest()
-            
-            do {
-                let count = try context.count(for: request)
-                
-                Task { @MainActor in
-                    self.transactionCount = count
-                    self.logger.debug("📊 Total transaction count: \(count)")
-                }
-                
-                return count
-            } catch {
-                Task { @MainActor in
-                    self.logger.error("❌ Failed to get transaction count: \(error.localizedDescription)")
-                }
-                throw TransactionStoreError.fetchFailed(error)
-            }
+    func getTotalTransactionCount() throws -> Int {
+        let request = TransactionEntity.fetchRequest()
+        
+        do {
+            let count = try context.count(for: request)
+            transactionCount = count
+            logger.debug("📊 Total transaction count: \(count)")
+            return count
+        } catch {
+            logger.error("❌ Failed to get transaction count: \(error.localizedDescription)")
+            throw TransactionStoreError.fetchFailed(error)
         }
     }
     
     // MARK: - Delete Operations
     
-    func deleteTransaction(_ transaction: TransactionEntity) async throws {
-        try await coreDataStack.performBackgroundTask { context in
-            // Find the transaction in this context
-            guard let objectID = transaction.objectID.uriRepresentation().absoluteString as String?,
-                  let managedObject = try? context.existingObject(with: transaction.objectID) else {
-                throw TransactionStoreError.deleteFailed(NSError(domain: "TransactionStore", code: 1, userInfo: [NSLocalizedDescriptionKey: "Transaction not found"]))
-            }
-            
-            context.delete(managedObject)
-            
-            do {
-                try context.save()
-                Task { @MainActor in
-                    self.logger.info("🗑️ Transaction deleted successfully")
-                }
-            } catch {
-                Task { @MainActor in
-                    self.logger.error("❌ Failed to delete transaction: \(error.localizedDescription)")
-                }
-                throw TransactionStoreError.deleteFailed(error)
-            }
-        }
+    func deleteTransaction(_ transaction: TransactionEntity) throws {
+        context.delete(transaction)
         
-        // Update balance and count after deletion
-        await updateBalance()
-        await updateTransactionCount()
+        do {
+            try saveContext()
+            logger.info("🗑️ Transaction deleted successfully")
+            
+            // Update reactive properties
+            updateBalance()
+            updateTransactionCount()
+        } catch {
+            logger.error("❌ Failed to delete transaction: \(error.localizedDescription)")
+            throw TransactionStoreError.deleteFailed(error)
+        }
     }
     
     // MARK: - Convenience Methods
     
-    func hasTransactions() async throws -> Bool {
-        let count = try await getTotalTransactionCount()
+    func hasTransactions() throws -> Bool {
+        let count = try getTotalTransactionCount()
         return count > 0
     }
     
-    func canAfford(amount: Double) async throws -> Bool {
-        let balance = try await getBalance()
+    func canAfford(amount: Double) -> Bool {
+        let balance = getBalance()
         return balance >= amount
+    }
+    
+    func getTransactionsSummary(from startDate: Date, to endDate: Date) throws -> TransactionsSummary {
+        let request = TransactionEntity.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date <= %@",
+            startDate as NSDate,
+            endDate as NSDate
+        )
+        
+        do {
+            let transactions = try context.fetch(request)
+            let totalIncome = transactions
+                .filter { $0.transactionType == .topUp }
+                .reduce(0.0) { $0 + $1.bitcoinAmount }
+            
+            let totalExpenses = transactions
+                .filter { $0.transactionType == .expense }
+                .reduce(0.0) { $0 + $1.bitcoinAmount }
+            
+            return TransactionsSummary(
+                totalIncome: totalIncome,
+                totalExpenses: totalExpenses,
+                netAmount: totalIncome - totalExpenses,
+                transactionCount: transactions.count
+            )
+        } catch {
+            throw TransactionStoreError.fetchFailed(error)
+        }
     }
     
     // MARK: - Private Helpers
@@ -266,20 +269,49 @@ final class TransactionStore: TransactionStoreProtocol {
         }
     }
     
-    private func updateBalance() async {
+    private func saveContext() throws {
+        guard context.hasChanges else { return }
+        
         do {
-            _ = try await getBalance()
+            try context.save()
         } catch {
-            logger.error("❌ Failed to update balance: \(error.localizedDescription)")
+            logger.error("❌ Failed to save context: \(error.localizedDescription)")
+            throw TransactionStoreError.saveFailed(error)
         }
     }
     
-    private func updateTransactionCount() async {
+    private func updateBalance() {
+        currentBalance = getBalance()
+    }
+    
+    private func updateTransactionCount() {
         do {
-            _ = try await getTotalTransactionCount()
+            transactionCount = try getTotalTransactionCount()
         } catch {
             logger.error("❌ Failed to update transaction count: \(error.localizedDescription)")
         }
+    }
+}
+
+// MARK: - Transaction Summary
+
+struct TransactionsSummary {
+    let totalIncome: Double
+    let totalExpenses: Double
+    let netAmount: Double
+    let transactionCount: Int
+    
+    var formattedTotalIncome: String {
+        String(format: "+%.8f BTC", totalIncome)
+    }
+    
+    var formattedTotalExpenses: String {
+        String(format: "-%.8f BTC", totalExpenses)
+    }
+    
+    var formattedNetAmount: String {
+        let prefix = netAmount >= 0 ? "+" : ""
+        return String(format: "%@%.8f BTC", prefix, netAmount)
     }
 }
 
@@ -299,13 +331,13 @@ extension TransactionStore {
 
 #if DEBUG
 extension TransactionStore {
-    func addTestData() async throws {
+    func addTestData() throws {
         let categories: [TransactionCategory] = [.groceries, .taxi, .electronics, .restaurant, .other]
         let calendar = Calendar.current
         
         // Add some test top-ups
-        try await addTopUp(amount: 1.0, date: calendar.date(byAdding: .day, value: -5, to: Date())!)
-        try await addTopUp(amount: 0.5, date: calendar.date(byAdding: .day, value: -3, to: Date())!)
+        try addTopUp(amount: 1.0, date: calendar.date(byAdding: .day, value: -5, to: Date())!)
+        try addTopUp(amount: 0.5, date: calendar.date(byAdding: .day, value: -3, to: Date())!)
         
         // Add some test expenses
         for i in 0..<10 {
@@ -313,15 +345,15 @@ extension TransactionStore {
             let amount = Double.random(in: 0.001...0.1)
             let date = calendar.date(byAdding: .day, value: -i, to: Date())!
             
-            try await addExpense(amount: amount, category: category, date: date)
+            try addExpense(amount: amount, category: category, date: date)
         }
     }
     
-    func clearAllData() async throws {
-        let transactions = try await fetchTransactions(offset: 0, limit: 1000)
+    func clearAllData() throws {
+        let transactions = try fetchTransactions(offset: 0, limit: 1000)
         
         for transaction in transactions {
-            try await deleteTransaction(transaction)
+            try deleteTransaction(transaction)
         }
     }
 }
