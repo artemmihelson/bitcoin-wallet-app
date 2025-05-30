@@ -38,6 +38,7 @@
 		4492A8B72DE9DD0200A03E05 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8B62DE9DD0200A03E05 /* MainCoordinator.swift */; };
 		4492A8B92DE9DD5F00A03E05 /* AddTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8B82DE9DD5F00A03E05 /* AddTransactionViewModel.swift */; };
 		4492A8BB2DEA105B00A03E05 /* AnalyticsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */; };
+		4492A8BE2DEA19A900A03E05 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		4492A8B62DE9DD0200A03E05 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		4492A8B82DE9DD5F00A03E05 /* AddTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionViewModel.swift; sourceTree = "<group>"; };
 		4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsServiceTests.swift; sourceTree = "<group>"; };
+		4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 		1CA3B6542D22B0F500176711 /* TransactionsTestTask */ = {
 			isa = PBXGroup;
 			children = (
+				4492A8BC2DEA199A00A03E05 /* Managers */,
 				448AB9842DE8BD53009BEBA8 /* UI */,
 				448AB96B2DE84F11009BEBA8 /* CoreData */,
 				0DF1D13E2D22DC2D001626E7 /* Services */,
@@ -289,6 +292,14 @@
 				448AB98A2DE8C285009BEBA8 /* AddTransactionViewController.swift */,
 			);
 			path = "Add Transaction";
+			sourceTree = "<group>";
+		};
+		4492A8BC2DEA199A00A03E05 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -429,6 +440,7 @@
 				4492A8B72DE9DD0200A03E05 /* MainCoordinator.swift in Sources */,
 				0DF1D1432D22DCD8001626E7 /* PerformOnce.swift in Sources */,
 				0DF1D1452D22DD06001626E7 /* BitcoinRateService.swift in Sources */,
+				4492A8BE2DEA19A900A03E05 /* ConfigurationManager.swift in Sources */,
 				448AB96D2DE84F45009BEBA8 /* CoreDataStack.swift in Sources */,
 				0DF1D1472D22DD4A001626E7 /* AnalyticsService.swift in Sources */,
 				1CA3B65A2D22B0F500176711 /* MainViewController.swift in Sources */,

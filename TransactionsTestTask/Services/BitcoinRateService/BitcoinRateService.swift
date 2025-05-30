@@ -8,8 +8,6 @@ import Combine
 import Foundation
 import os.log
 
-/// Rate Service should fetch data from https://api.coindesk.com/v1/bpi/currentprice.json
-
 protocol BitcoinRateService: AnyObject {
     var ratePublisher: AnyPublisher<Double, Never> { get }
     var currentRate: Double? { get }
@@ -26,7 +24,11 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
     private let cacheKey = "cached_btc_rate"
     private let logger = Logger(subsystem: "BitcoinWallet", category: "BitcoinRateService")
     
-    private let apiURL = "https://rest.coincap.io/v3/assets/bitcoin?apiKey=1ff0c227a1dce8a2f53633955a44b22734833f14237e8e1c275f59fc77cf65aa"
+    private var apiURL: String {
+        get {
+            return "\(ConfigurationManager.shared.coincapApiBaseUrl)?apiKey=\(ConfigurationManager.shared.coincapApiKey)"
+        }
+    }
     
     private(set) var currentRate: Double? {
         didSet {
