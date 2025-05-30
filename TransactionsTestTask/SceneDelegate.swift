@@ -15,8 +15,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
         ServicesAssembler.initialize()
+        window = UIWindow(windowScene: windowScene)
+                
+        // Initialize services first
+        ServicesAssembler.initialize()
+        
+        // Create main view controller
+        let mainViewController = MainViewController()
+        
+        // Wrap in navigation controller
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        
+        // Configure navigation controller appearance
+        configureNavigationController(navigationController)
+        
+        // Set root view controller
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
+    }
+
+    private func configureNavigationController(_ navigationController: UINavigationController) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = .systemGroupedBackground
+        appearance.shadowColor = .clear // Remove shadow to prevent visual separation
+        
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.compactAppearance = appearance
+        
+        // Ensure navigation bar is not translucent to prevent content overlap
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.tintColor = .systemBlue
+        
+        // Set proper background color
+        navigationController.view.backgroundColor = .systemGroupedBackground
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -32,5 +67,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        do {
+            try CoreDataStack.shared.saveContext()
+        } catch {
+            print("Failed to save context when entering background: \(error)")
+        }
     }
 }

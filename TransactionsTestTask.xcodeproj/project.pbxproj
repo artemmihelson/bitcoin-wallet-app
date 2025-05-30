@@ -26,6 +26,13 @@
 		448AB97D2DE88827009BEBA8 /* MockAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB97C2DE88827009BEBA8 /* MockAnalyticsService.swift */; };
 		448AB9802DE88872009BEBA8 /* TestModuleObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB97F2DE88872009BEBA8 /* TestModuleObserver.swift */; };
 		448AB9822DE8895B009BEBA8 /* TestMultiModuleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9812DE8895B009BEBA8 /* TestMultiModuleLogger.swift */; };
+		448AB9882DE8C0C7009BEBA8 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB9872DE8C0C7009BEBA8 /* TransactionTableViewCell.swift */; };
+		448AB98B2DE8C285009BEBA8 /* AddTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448AB98A2DE8C285009BEBA8 /* AddTransactionViewController.swift */; };
+		448AB98D2DE8EBDF009BEBA8 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 448AB98C2DE8EBDF009BEBA8 /* Launch Screen.storyboard */; };
+		4492A8AB2DE8EFFE00A03E05 /* BalanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8AA2DE8EFFE00A03E05 /* BalanceTableViewCell.swift */; };
+		4492A8AD2DE8F05600A03E05 /* ActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8AC2DE8F05600A03E05 /* ActionsTableViewCell.swift */; };
+		4492A8AF2DE8F06D00A03E05 /* EmptyStateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8AE2DE8F06D00A03E05 /* EmptyStateTableViewCell.swift */; };
+		4492A8B12DE8F08200A03E05 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8B02DE8F08200A03E05 /* LoadingTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +77,13 @@
 		448AB97F2DE88872009BEBA8 /* TestModuleObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestModuleObserver.swift; sourceTree = "<group>"; };
 		448AB9812DE8895B009BEBA8 /* TestMultiModuleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMultiModuleLogger.swift; sourceTree = "<group>"; };
 		448AB9832DE88D1A009BEBA8 /* TransactionsTestTaskUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TransactionsTestTaskUITests-Info.plist"; sourceTree = "<group>"; };
+		448AB9872DE8C0C7009BEBA8 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		448AB98A2DE8C285009BEBA8 /* AddTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionViewController.swift; sourceTree = "<group>"; };
+		448AB98C2DE8EBDF009BEBA8 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		4492A8AA2DE8EFFE00A03E05 /* BalanceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceTableViewCell.swift; sourceTree = "<group>"; };
+		4492A8AC2DE8F05600A03E05 /* ActionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsTableViewCell.swift; sourceTree = "<group>"; };
+		4492A8AE2DE8F06D00A03E05 /* EmptyStateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTableViewCell.swift; sourceTree = "<group>"; };
+		4492A8B02DE8F08200A03E05 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,13 +163,14 @@
 		1CA3B6542D22B0F500176711 /* TransactionsTestTask */ = {
 			isa = PBXGroup;
 			children = (
+				448AB9842DE8BD53009BEBA8 /* UI */,
 				448AB96B2DE84F11009BEBA8 /* CoreData */,
 				0DF1D13E2D22DC2D001626E7 /* Services */,
 				1CA3B6552D22B0F500176711 /* AppDelegate.swift */,
 				1CA3B6572D22B0F500176711 /* SceneDelegate.swift */,
-				1CA3B6592D22B0F500176711 /* MainViewController.swift */,
 				1CA3B6612D22B0F600176711 /* Assets.xcassets */,
 				1CA3B6662D22B0F600176711 /* Info.plist */,
+				448AB98C2DE8EBDF009BEBA8 /* Launch Screen.storyboard */,
 			);
 			path = TransactionsTestTask;
 			sourceTree = "<group>";
@@ -221,6 +236,44 @@
 				448AB97F2DE88872009BEBA8 /* TestModuleObserver.swift */,
 			);
 			path = Modules;
+			sourceTree = "<group>";
+		};
+		448AB9842DE8BD53009BEBA8 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				448AB9892DE8C1F0009BEBA8 /* Add Transaction */,
+				448AB9852DE8C0AE009BEBA8 /* Main */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		448AB9852DE8C0AE009BEBA8 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				448AB9862DE8C0B5009BEBA8 /* Cells */,
+				1CA3B6592D22B0F500176711 /* MainViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		448AB9862DE8C0B5009BEBA8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4492A8B02DE8F08200A03E05 /* LoadingTableViewCell.swift */,
+				4492A8AE2DE8F06D00A03E05 /* EmptyStateTableViewCell.swift */,
+				4492A8AC2DE8F05600A03E05 /* ActionsTableViewCell.swift */,
+				4492A8AA2DE8EFFE00A03E05 /* BalanceTableViewCell.swift */,
+				448AB9872DE8C0C7009BEBA8 /* TransactionTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		448AB9892DE8C1F0009BEBA8 /* Add Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				448AB98A2DE8C285009BEBA8 /* AddTransactionViewController.swift */,
+			);
+			path = "Add Transaction";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,6 +380,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448AB98D2DE8EBDF009BEBA8 /* Launch Screen.storyboard in Resources */,
 				1CA3B6622D22B0F600176711 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,7 +406,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4492A8B12DE8F08200A03E05 /* LoadingTableViewCell.swift in Sources */,
 				448AB9752DE86ED3009BEBA8 /* BTCResponse.swift in Sources */,
+				4492A8AD2DE8F05600A03E05 /* ActionsTableViewCell.swift in Sources */,
 				448AB9722DE85D9F009BEBA8 /* TransactionStore.swift in Sources */,
 				0D1540612D22EF5D00D6D63F /* AnalyticsEvent.swift in Sources */,
 				0DF1D1432D22DCD8001626E7 /* PerformOnce.swift in Sources */,
@@ -360,10 +416,14 @@
 				448AB96D2DE84F45009BEBA8 /* CoreDataStack.swift in Sources */,
 				0DF1D1472D22DD4A001626E7 /* AnalyticsService.swift in Sources */,
 				1CA3B65A2D22B0F500176711 /* MainViewController.swift in Sources */,
+				448AB9882DE8C0C7009BEBA8 /* TransactionTableViewCell.swift in Sources */,
 				1CA3B6562D22B0F500176711 /* AppDelegate.swift in Sources */,
 				448AB9702DE84F88009BEBA8 /* TransactionEntity.swift in Sources */,
 				1CA3B6582D22B0F500176711 /* SceneDelegate.swift in Sources */,
+				4492A8AF2DE8F06D00A03E05 /* EmptyStateTableViewCell.swift in Sources */,
+				448AB98B2DE8C285009BEBA8 /* AddTransactionViewController.swift in Sources */,
 				448AB9782DE86F1A009BEBA8 /* BitcoinRateLogger.swift in Sources */,
+				4492A8AB2DE8EFFE00A03E05 /* BalanceTableViewCell.swift in Sources */,
 				0DF1D1402D22DC51001626E7 /* ServicesAssembler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -533,6 +593,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TransactionsTestTask/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -559,6 +620,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TransactionsTestTask/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
