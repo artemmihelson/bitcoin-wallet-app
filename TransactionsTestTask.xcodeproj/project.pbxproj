@@ -39,6 +39,7 @@
 		4492A8B92DE9DD5F00A03E05 /* AddTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8B82DE9DD5F00A03E05 /* AddTransactionViewModel.swift */; };
 		4492A8BB2DEA105B00A03E05 /* AnalyticsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */; };
 		4492A8BE2DEA19A900A03E05 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */; };
+		4492A8C22DEA1E4900A03E05 /* ConfigurationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8C12DEA1E4900A03E05 /* ConfigurationManagerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		4492A8B82DE9DD5F00A03E05 /* AddTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionViewModel.swift; sourceTree = "<group>"; };
 		4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsServiceTests.swift; sourceTree = "<group>"; };
 		4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
+		4492A8C12DEA1E4900A03E05 /* ConfigurationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 		1CA3B66E2D22B0F600176711 /* TransactionsTestTaskTests */ = {
 			isa = PBXGroup;
 			children = (
+				4492A8C12DEA1E4900A03E05 /* ConfigurationManagerTests.swift */,
 				4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */,
 				448AB9792DE887B3009BEBA8 /* Mocks */,
 				1CA3B66F2D22B0F600176711 /* MultipleModulesTests.swift */,
@@ -464,6 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				448AB9822DE8895B009BEBA8 /* TestMultiModuleLogger.swift in Sources */,
+				4492A8C22DEA1E4900A03E05 /* ConfigurationManagerTests.swift in Sources */,
 				448AB97B2DE887CC009BEBA8 /* MockBitcoinRateService.swift in Sources */,
 				448AB9802DE88872009BEBA8 /* TestModuleObserver.swift in Sources */,
 				1CA3B6702D22B0F600176711 /* MultipleModulesTests.swift in Sources */,
