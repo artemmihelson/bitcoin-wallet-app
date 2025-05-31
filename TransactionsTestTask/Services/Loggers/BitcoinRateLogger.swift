@@ -19,7 +19,7 @@ final class BitcoinRateLogger {
     init(service: BitcoinRateService, analytics: AnalyticsService) {
         self.analytics = analytics
         
-        logger.info("🎯 Bitcoin rate logger initialized")
+        logger.info("Bitcoin rate logger initialized")
         
         cancellable = service.ratePublisher
             .sink { [weak self] rate in
@@ -28,7 +28,7 @@ final class BitcoinRateLogger {
     }
     
     private func handleRateUpdate(_ rate: Double) {
-        logger.info("📢 Bitcoin rate update received: $\(rate, format: .hybrid(precision: 2))")
+        logger.info("Bitcoin rate update received: $\(rate, format: .hybrid(precision: 2))")
         
         // Track the rate update event
         analytics.trackEvent(
