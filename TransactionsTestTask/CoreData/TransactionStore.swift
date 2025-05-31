@@ -75,8 +75,6 @@ final class TransactionStore: TransactionStoreProtocol {
     
     @discardableResult
     func addTopUp(amount: Double, date: Date = Date()) throws -> TransactionEntity {
-        print("🔍 TransactionStore.addTopUp called with amount: \(amount)")
-        
         try validateAmount(amount)
         
         let entity = TransactionEntity.createTopUp(
@@ -85,14 +83,8 @@ final class TransactionStore: TransactionStoreProtocol {
             date: date
         )
         
-        // Debug the entity before saving
-        print("🔍 Entity before save: type=\(entity.type), amount=\(entity.amount)")
-        
         try saveContext()
-        logger.info("✅ Top-up added: \(amount) BTC")
-        
-        // Debug the entity after saving
-        print("🔍 Entity after save: type=\(entity.type), amount=\(entity.amount)")
+        logger.info("Top-up added: \(amount) BTC")
         
         // Update reactive properties
         updateBalance()
@@ -118,7 +110,7 @@ final class TransactionStore: TransactionStoreProtocol {
         )
         
         try saveContext()
-        logger.info("✅ Expense added: \(amount) BTC, category: \(category.displayName)")
+        logger.info("Expense added: \(amount) BTC, category: \(category.displayName)")
         
         // Update reactive properties
         updateBalance()
@@ -141,10 +133,10 @@ final class TransactionStore: TransactionStoreProtocol {
         
         do {
             let transactions = try context.fetch(request)
-            logger.debug("📊 Fetched \(transactions.count) transactions (offset: \(offset))")
+            logger.debug("Fetched \(transactions.count) transactions (offset: \(offset))")
             return transactions
         } catch {
-            logger.error("❌ Failed to fetch transactions: \(error.localizedDescription)")
+            logger.error("Failed to fetch transactions: \(error.localizedDescription)")
             throw TransactionStoreError.fetchFailed(error)
         }
     }
@@ -156,13 +148,6 @@ final class TransactionStore: TransactionStoreProtocol {
         let transactions = try fetchTransactions(offset: offset, limit: limit)
         let grouped = TransactionEntity.groupTransactionsByDate(transactions)
         
-        print("🔍 fetchGroupedByDate result:")
-        print("  - Input transactions: \(transactions.count)")
-        print("  - Grouped sections: \(grouped.count)")
-        for (index, (date, sectionTransactions)) in grouped.enumerated() {
-            print("  - Section \(index): \(TransactionEntity.formatDateForSection(date)) with \(sectionTransactions.count) transactions")
-        }
-        
         return grouped
     }
     
@@ -171,10 +156,10 @@ final class TransactionStore: TransactionStoreProtocol {
         
         do {
             let transactions = try context.fetch(request)
-            logger.debug("📊 Fetched \(transactions.count) transactions for date: \(date)")
+            logger.debug("Fetched \(transactions.count) transactions for date: \(date)")
             return transactions
         } catch {
-            logger.error("❌ Failed to fetch transactions for date: \(error.localizedDescription)")
+            logger.error("Failed to fetch transactions for date: \(error.localizedDescription)")
             throw TransactionStoreError.fetchFailed(error)
         }
     }
@@ -184,7 +169,7 @@ final class TransactionStore: TransactionStoreProtocol {
     func getBalance() -> Double {
         let balance = TransactionEntity.calculateBalance(in: context)
         currentBalance = balance
-        logger.debug("💰 Current balance: \(balance) BTC")
+        logger.debug("Current balance: \(balance) BTC")
         return balance
     }
     
@@ -196,10 +181,10 @@ final class TransactionStore: TransactionStoreProtocol {
         do {
             let count = try context.count(for: request)
             transactionCount = count
-            logger.debug("📊 Total transaction count: \(count)")
+            logger.debug("Total transaction count: \(count)")
             return count
         } catch {
-            logger.error("❌ Failed to get transaction count: \(error.localizedDescription)")
+            logger.error("Failed to get transaction count: \(error.localizedDescription)")
             throw TransactionStoreError.fetchFailed(error)
         }
     }
@@ -211,13 +196,13 @@ final class TransactionStore: TransactionStoreProtocol {
         
         do {
             try saveContext()
-            logger.info("🗑️ Transaction deleted successfully")
+            logger.info("Transaction deleted successfully")
             
             // Update reactive properties
             updateBalance()
             updateTransactionCount()
         } catch {
-            logger.error("❌ Failed to delete transaction: \(error.localizedDescription)")
+            logger.error("Failed to delete transaction: \(error.localizedDescription)")
             throw TransactionStoreError.deleteFailed(error)
         }
     }
@@ -238,7 +223,7 @@ final class TransactionStore: TransactionStoreProtocol {
     
     private func validateAmount(_ amount: Double) throws {
         guard amount > 0 else {
-            logger.error("❌ Invalid amount: \(amount)")
+            logger.error("Invalid amount: \(amount)")
             throw TransactionStoreError.invalidAmount
         }
     }
@@ -249,7 +234,7 @@ final class TransactionStore: TransactionStoreProtocol {
         do {
             try context.save()
         } catch {
-            logger.error("❌ Failed to save context: \(error.localizedDescription)")
+            logger.error("Failed to save context: \(error.localizedDescription)")
             throw TransactionStoreError.saveFailed(error)
         }
     }
@@ -262,7 +247,7 @@ final class TransactionStore: TransactionStoreProtocol {
         do {
             transactionCount = try getTotalTransactionCount()
         } catch {
-            logger.error("❌ Failed to update transaction count: \(error.localizedDescription)")
+            logger.error("Failed to update transaction count: \(error.localizedDescription)")
         }
     }
     
@@ -270,7 +255,7 @@ final class TransactionStore: TransactionStoreProtocol {
         do {
             allTransactions = try fetchTransactions(offset: 0, limit: 20)
         } catch {
-            logger.error("❌ Failed to update transactions: \(error.localizedDescription)")
+            logger.error("Failed to update transactions: \(error.localizedDescription)")
         }
     }
 }
@@ -290,35 +275,3 @@ extension TransactionStore {
         $allTransactions
     }
 }
-
-// MARK: - Testing Support
-
-#if DEBUG
-extension TransactionStore {
-    func addTestData() throws {
-        let categories: [TransactionCategory] = [.groceries, .taxi, .electronics, .restaurant, .other]
-        let calendar = Calendar.current
-        
-        // Add some test top-ups
-        try addTopUp(amount: 1.0, date: calendar.date(byAdding: .day, value: -5, to: Date())!)
-        try addTopUp(amount: 0.5, date: calendar.date(byAdding: .day, value: -3, to: Date())!)
-        
-        // Add some test expenses
-        for i in 0..<10 {
-            let category = categories.randomElement()!
-            let amount = Double.random(in: 0.001...0.1)
-            let date = calendar.date(byAdding: .day, value: -i, to: Date())!
-            
-            try addExpense(amount: amount, category: category, date: date)
-        }
-    }
-    
-    func clearAllData() throws {
-        let transactions = try fetchTransactions(offset: 0, limit: 1000)
-        
-        for transaction in transactions {
-            try deleteTransaction(transaction)
-        }
-    }
-}
-#endif
