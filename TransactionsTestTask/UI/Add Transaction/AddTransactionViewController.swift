@@ -502,7 +502,7 @@ private extension AddTransactionViewController {
         )
         
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            self.viewModel.cancel() // This will dismiss through coordinator
+            self.viewModel.cancel()
         })
         
         present(alert, animated: true)

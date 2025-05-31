@@ -96,13 +96,6 @@ final class AddTransactionViewModel: ObservableObject {
                     self.successMessage = "Successfully added ₿\(String(format: "%.8f", amount)) \(category.displayName) expense"
                 }
                 
-                // Notify coordinator to dismiss and refresh
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.coordinator?.navigationController.dismiss(animated: true) {
-                        // Trigger refresh in main view
-                    }
-                }
-                
             } catch {
                 await MainActor.run {
                     self.isLoading = false
