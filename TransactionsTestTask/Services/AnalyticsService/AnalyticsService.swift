@@ -19,7 +19,7 @@ final class AnalyticsServiceImpl {
     private let eventsLock = NSLock()
     
     init() {
-        logger.info("📈 Analytics service initialized")
+        logger.info("Analytics service initialized")
     }
     
     // For unit testing access
@@ -46,7 +46,7 @@ extension AnalyticsServiceImpl: AnalyticsService {
         
         // Log the event for debugging
         let parametersString = parameters.map { "\($0.key): \($0.value)" }.joined(separator: ", ")
-        logger.info("📊 Analytics Event: \(name) | \(parametersString)")
+        logger.info("Analytics Event: \(name) | \(parametersString)")
         
         // Keep only last 1000 events to prevent memory issues
         if events.count > 1000 {
