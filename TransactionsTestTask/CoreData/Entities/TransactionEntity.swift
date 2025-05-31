@@ -164,7 +164,6 @@ extension TransactionEntity {
         bitcoinAmount: Double,
         date: Date = Date()
     ) -> TransactionEntity {
-        print("🔍 Creating top-up transaction: amount=\(bitcoinAmount)")
         let transaction = TransactionEntity(context: context)
         let now = Date()
         
@@ -175,7 +174,6 @@ extension TransactionEntity {
         transaction.date = date
         transaction.createdAt = now
         
-        print("✅ Created transaction: type=\(transaction.type), amount=\(transaction.amount)")
         return transaction
     }
     
@@ -240,7 +238,6 @@ extension TransactionEntity {
                 total + transaction.signedAmount
             }
         } catch {
-            print("Error calculating balance: \(error)")
             return 0.0
         }
     }
