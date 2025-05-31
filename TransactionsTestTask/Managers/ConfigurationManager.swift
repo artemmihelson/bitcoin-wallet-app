@@ -57,8 +57,6 @@ final class ConfigurationManager {
         
         configData = configDict
         validateRequiredKeys()
-        
-        print("✅ Configuration loaded successfully from Config.plist")
     }
     
     private func validateRequiredKeys() {
@@ -74,20 +72,4 @@ final class ConfigurationManager {
             }
         }
     }
-    
-    // MARK: - Debug Helper
-    
-    #if DEBUG
-    func printAllConfiguration() {
-        print("Current Configuration:")
-        for (key, value) in configData {
-            // Don't print sensitive data like API keys in full
-            if key.lowercased().contains("key") || key.lowercased().contains("secret") {
-                print("  \(key): [REDACTED]")
-            } else {
-                print("  \(key): \(value)")
-            }
-        }
-    }
-    #endif
 }
