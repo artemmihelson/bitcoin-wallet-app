@@ -40,6 +40,7 @@
 		4492A8BB2DEA105B00A03E05 /* AnalyticsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */; };
 		4492A8BE2DEA19A900A03E05 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */; };
 		4492A8C22DEA1E4900A03E05 /* ConfigurationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8C12DEA1E4900A03E05 /* ConfigurationManagerTests.swift */; };
+		4492A8C42DEA2E2E00A03E05 /* CoreDataStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4492A8C32DEA2E2E00A03E05 /* CoreDataStackTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsServiceTests.swift; sourceTree = "<group>"; };
 		4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 		4492A8C12DEA1E4900A03E05 /* ConfigurationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManagerTests.swift; sourceTree = "<group>"; };
+		4492A8C32DEA2E2E00A03E05 /* CoreDataStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 		1CA3B66E2D22B0F600176711 /* TransactionsTestTaskTests */ = {
 			isa = PBXGroup;
 			children = (
+				4492A8C52DEA302D00A03E05 /* CoreData */,
 				4492A8C12DEA1E4900A03E05 /* ConfigurationManagerTests.swift */,
 				4492A8BA2DEA105B00A03E05 /* AnalyticsServiceTests.swift */,
 				448AB9792DE887B3009BEBA8 /* Mocks */,
@@ -303,6 +306,14 @@
 				4492A8BD2DEA19A900A03E05 /* ConfigurationManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		4492A8C52DEA302D00A03E05 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				4492A8C32DEA2E2E00A03E05 /* CoreDataStackTests.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -473,6 +484,7 @@
 				1CA3B6702D22B0F600176711 /* MultipleModulesTests.swift in Sources */,
 				4492A8BB2DEA105B00A03E05 /* AnalyticsServiceTests.swift in Sources */,
 				448AB97D2DE88827009BEBA8 /* MockAnalyticsService.swift in Sources */,
+				4492A8C42DEA2E2E00A03E05 /* CoreDataStackTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
