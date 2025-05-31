@@ -33,7 +33,7 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
     private(set) var currentRate: Double? {
         didSet {
             if let rate = currentRate {
-                logger.info("💱 Bitcoin rate updated: $\(rate, format: .hybrid(precision: 2))")
+                logger.info("Bitcoin rate updated: $\(rate, format: .hybrid(precision: 2))")
                 rateSubject.send(rate)
                 saveRateToCache(rate)
             }
@@ -49,12 +49,12 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
     init() {
         self.currentRate = loadRateFromCache()
         if let cachedRate = currentRate {
-            logger.info("📱 Loaded cached Bitcoin rate: $\(cachedRate, format: .hybrid(precision: 2))")
+            logger.info("Loaded cached Bitcoin rate: $\(cachedRate, format: .hybrid(precision: 2))")
         }
     }
     
     func startUpdating() {
-        logger.info("🚀 Starting Bitcoin rate updates (every 5 minutes)")
+        logger.info("Starting Bitcoin rate updates (every 5 minutes)")
         
         fetchRate()
         
@@ -68,18 +68,18 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
     }
     
     func stopUpdating() {
-        logger.info("⏹️ Stopping Bitcoin rate updates")
+        logger.info("Stopping Bitcoin rate updates")
         timer?.cancel()
         timer = nil
     }
     
     private func fetchRate() {
         guard let url = URL(string: apiURL) else {
-            logger.error("❌ Invalid API URL: \(self.apiURL)")
+            logger.error("Invalid API URL: \(self.apiURL)")
             return
         }
         
-        logger.debug("🌐 Fetching Bitcoin rate from CoinCap API...")
+        logger.debug("Fetching Bitcoin rate from CoinCap API...")
         
         URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
@@ -89,15 +89,15 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
                 response.data.price
             }
             .catch { [weak self] error -> Just<Double> in
-                self?.logger.error("❌ Failed to fetch Bitcoin rate: \(error.localizedDescription)")
+                self?.logger.error("Failed to fetch Bitcoin rate: \(error.localizedDescription)")
                 
                 // If network fails, try to use cached rate
                 if let cachedRate = self?.currentRate {
-                    self?.logger.info("📱 Using cached rate due to network error: $\(cachedRate, format: .hybrid(precision: 2))")
+                    self?.logger.info("Using cached rate due to network error: $\(cachedRate, format: .hybrid(precision: 2))")
                     return Just(cachedRate)
                 } else {
                     // If no cache available, return a default rate
-                    self?.logger.warning("⚠️ No cached rate available, using default rate")
+                    self?.logger.warning("No cached rate available, using default rate")
                     return Just(0.0) // Default fallback rate
                 }
             }
@@ -107,7 +107,7 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
                 if rate > 0 {
                     self?.currentRate = rate
                 } else {
-                    self?.logger.warning("⚠️ Received invalid rate: \(rate)")
+                    self?.logger.warning("Received invalid rate: \(rate)")
                 }
             }
             .store(in: &cancellables)
@@ -116,7 +116,7 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
     private func saveRateToCache(_ rate: Double) {
         UserDefaults.standard.set(rate, forKey: cacheKey)
         UserDefaults.standard.set(Date(), forKey: "\(cacheKey)_timestamp")
-        logger.debug("💾 Cached Bitcoin rate: $\(rate, format: .hybrid(precision: 2))")
+        logger.debug("Cached Bitcoin rate: $\(rate, format: .hybrid(precision: 2))")
     }
     
     private func loadRateFromCache() -> Double? {
@@ -125,7 +125,7 @@ final class BitcoinRateServiceImpl: BitcoinRateService {
         
         // Check if cache is not too old (e.g., less than 1 hour)
         if let timestamp = timestamp, Date().timeIntervalSince(timestamp) > 3600 {
-            logger.debug("⏰ Cached rate is too old, will refresh")
+            logger.debug("Cached rate is too old, will refresh")
             return nil
         }
         
